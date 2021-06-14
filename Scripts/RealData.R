@@ -5,8 +5,8 @@ library(e1071)
 library(caret)
 library(glmnet)
 library(doParallel)
-# specify the path of source code file to load functions
-source("~/source_functions.R")
+# specify the path which has source code file to load functions
+source("source_functions.R")
 # specify the path to Input directory to load data and reference libraries
 # load chemical shifts
 load("ppm.RData")
@@ -58,6 +58,7 @@ k = 50  #number of lambda values to evaluate
 e  = 0.0001 #arbitrary number used to create a sequence of lambda values
 sig = 1/3  #sigma_0: weight distributor parameter
 s = 0.002 # peak shape parameter
+num_iters = 5  #number of iterations
 thres = 0.07*trapz(ppm, mix1) 
 peak_use = which(mix1 > thres)
 
@@ -131,7 +132,7 @@ for (i in 1:length(new_loc2)){
 }
 # SECOND-STAGE FITTING
 mdl = lm(formula = mix1 ~ new_ref - 1 )
-beta_tilde = mdl_ols$coefficients
+beta_tilde = mdl$coefficients
 
 #calculate TP, FP, FN
 
@@ -139,6 +140,8 @@ FP = length(setdiff(ref_idx[which(beta_tilde>0)], mix_truth))
 FN = length(setdiff(mix_truth, ref_idx[which(beta_tilde>0)]))
 TP = length(intersect(mix_truth, ref_idx[which(beta_tilde>0)]))
 TN = J - (FP + FN + TP)
+
+
 
 #=========================================================================================#
 # Hart et al. samples
@@ -156,6 +159,7 @@ k = 50  #number of lambda values to evaluate
 e  = 0.0001 #arbitrary number used to create a sequence of lambda values
 sig = 1/3  #sigma_0: weight distributor parameter
 s = 0.002 # peak shape parameter
+num_iters = 5  #number of iterations
 thres = 0.07*trapz(ppm, mix1) 
 peak_use = which(mix1 > thres)
 
@@ -229,7 +233,7 @@ for (i in 1:length(new_loc2)){
 }
 # SECOND-STAGE FITTING
 mdl = lm(formula = mix1 ~ new_ref - 1 )
-beta_tilde = mdl_ols$coefficients
+beta_tilde = mdl$coefficients
 
 #calculate TP, FP, FN
 
