@@ -4,7 +4,8 @@ library(e1071)
 library(caret)
 library(glmnet)
 library(doParallel)
-source("~/Documents/MVAPACK related/Shifting error regularization model paper /SRCC_code/source_functions.R")
+#set directory to load in source functions
+source("~/source_functions.R")
 
 
 set.seed(0807)
