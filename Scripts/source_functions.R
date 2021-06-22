@@ -25,6 +25,19 @@ sim_cauchy = function(x, y, ppm, s){
   return (s1) 
 }
 
+# create important region
+id_create = function(id, d = 10, n){
+  #n: total number of data points
+  res = c()
+  np = length(id)
+  for (k in 1:np){
+    i = id[k]
+    pwindow = seq(max(1, i-d), min(n, i+d))
+    res = sort(union(res, pwindow))
+  }
+  return(res)
+}
+
 # exponential part used in weight function
 p_s1 = function(x,y, sig){
   res = exp((-x^2 + y^2)/(2*sig^2))
